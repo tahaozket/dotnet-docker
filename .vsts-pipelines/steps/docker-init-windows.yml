@@ -15,16 +15,16 @@ steps:
       displayName: ${{ format('Pull Image {0}', parameters.imageBuilderImage) }}
       env:
         image: ${{ parameters.imageBuilderImage }}
-    - script: docker create --name setupImageBuilder_$(Build.BuildId) %image%
+    - script: docker create --name setupImageBuilder_$(Build.BuildId)-$(System.JobName) %image%
       displayName: Create Setup Container
       env:
         image: ${{ parameters.imageBuilderImage }}
     - script: rmdir /q /s $(Build.BinariesDirectory)\Microsoft.DotNet.ImageBuilder
       displayName: Cleanup Image Builder
       continueOnError: true
-    - script: docker cp setupImageBuilder_$(Build.BuildId):/image-builder $(Build.BinariesDirectory)/Microsoft.DotNet.ImageBuilder
+    - script: docker cp setupImageBuilder_$(Build.BuildId)-$(System.JobName):/image-builder $(Build.BinariesDirectory)/Microsoft.DotNet.ImageBuilder
       displayName: Copy Image Builder
-    - script: docker rm -f setupImageBuilder_$(Build.BuildId)
+    - script: docker rm -f setupImageBuilder_$(Build.BuildId)-$(System.JobName)
       displayName: Cleanup Setup Container
       condition: always()
       continueOnError: true

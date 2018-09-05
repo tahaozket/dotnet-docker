@@ -17,9 +17,9 @@ phases:
       matrix: ${{ parameters.matrix }}
     variables:
       repo: ${{ parameters.repo }}
-      repoVolume: test-repo-$(Build.BuildId)
+      repoVolume: test-repo-$(Build.BuildId)-$(System.JobName)
       testrunner.image: ${{ parameters.testRunnerLinuxImage }}
-      testRunner.container: testrunner-$(Build.BuildId)
+      testRunner.container: testrunner-$(Build.BuildId)-$(System.JobName)
     steps:
       - template: ../steps/docker-init-linux.yml
         parameters:

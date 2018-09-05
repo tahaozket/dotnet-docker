@@ -27,7 +27,7 @@ phases:
       imageBuilder.image: ${{ parameters.imageBuilderImage }}
       manifest: ${{ parameters.manifest }}
       repo: ${{ parameters.repo }}
-      repoVolume: copy-repo-$(Build.BuildId)
+      repoVolume: copy-repo-$(Build.BuildId)-$(System.JobName)
     steps:
       - template: ../steps/docker-init-linux.yml
         parameters:
