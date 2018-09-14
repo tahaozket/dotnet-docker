@@ -4,6 +4,8 @@ parameters:
   testRunnerLinuxImage: microsoft/dotnet-buildtools-prereqs:debian-stretch-docker-testrunner-63f2145-20184325094343
   manifest: manifest.json
   repo: null
+variables:
+  foo: bar
 phases:
   ################################################################################
   # Initialization - Generate the VSTS build matrix
@@ -22,6 +24,7 @@ phases:
         parameters:
           image: $(imageBuilder.image)
           repoVolume: $(repoVolume)
+      - script: echo $(foo)
       - script: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image) generateBuildMatrix --manifest $(manifest) --type build
         name: buildMatrix
       - script: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image) generateBuildMatrix --manifest $(manifest) --type test
