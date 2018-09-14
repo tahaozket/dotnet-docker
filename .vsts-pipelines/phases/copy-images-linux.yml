@@ -1,8 +1,6 @@
 parameters:
   phase: null
   imageBuilderImage: null
-  manifest: null
-  repo: null
   architecture: null
   matrix: {}
 phases:
@@ -17,16 +15,13 @@ phases:
       - Test_NanoServer1803_amd64
     queue:
       name: DotNet-Build
-      demands:
-        - agent.os -equals linux
+      demands: agent.os -equals linux
       parallel: 100
       timeoutInMinutes: 90
       matrix: ${{ parameters.matrix }}
     variables:
       architecture: ${{ parameters.architecture }}
       imageBuilder.image: ${{ parameters.imageBuilderImage }}
-      manifest: ${{ parameters.manifest }}
-      repo: ${{ parameters.repo }}
       repoVolume: copy-repo-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml

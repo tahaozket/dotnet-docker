@@ -1,6 +1,5 @@
 parameters:
   testRunnerLinuxImage: null
-  repo: null
 phases:
   - phase: Test_Linux_amd64
     condition: and(ne(variables['repo'], 'dotnet-samples'), or(and(succeeded(), eq(variables['singlePhase'], '')), eq(variables['singlePhase'], 'test')))
@@ -9,13 +8,11 @@ phases:
       - GenerateMatrices
     queue:
       name: DotNet-Build
-      demands:
-        - agent.os -equals linux
+      demands: agent.os -equals linux
       parallel: 100
       timeoutInMinutes: 90
       matrix: $[ dependencies.GenerateMatrices.outputs['testMatrix.testMatrixLinuxAmd64'] ]
     variables:
-      repo: ${{ parameters.repo }}
       repoVolume: test-repo-$(Build.BuildId)
       testrunner.image: ${{ parameters.testRunnerLinuxImage }}
       testRunner.container: testrunner-$(Build.BuildId)

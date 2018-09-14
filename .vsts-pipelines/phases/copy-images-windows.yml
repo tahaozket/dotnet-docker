@@ -1,8 +1,6 @@
 parameters:
   phase: null
   imageBuilderImage: null
-  manifest: null
-  repo: null
   osVersion: null
   demands: []
   matrix: {}
@@ -23,8 +21,6 @@ phases:
       timeoutInMinutes: 90
       matrix: ${{ parameters.matrix }}
     variables:
-      manifest: ${{ parameters.manifest }}
-      repo: ${{ parameters.repo }}
       osVersion: ${{ parameters.osVersion }}
     steps:
       - template: ../steps/docker-init-windows.yml

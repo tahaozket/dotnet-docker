@@ -1,22 +1,17 @@
 parameters:
   imageBuilderImage: null
-  manifest: null
-  repo: null
 phases:
   - phase: Build_Linux_amd64
     condition: or(eq(variables['singlePhase'], ''), eq(variables['singlePhase'], 'build'))
     dependsOn: GenerateMatrices
     queue:
       name: DotNet-Build
-      demands:
-        - agent.os -equals linux
+      demands: agent.os -equals linux
       parallel: 100
       timeoutInMinutes: 90
       matrix: $[ dependencies.GenerateMatrices.outputs['buildMatrix.buildMatrixLinuxAmd64'] ]
     variables:
       imageBuilder.image: ${{ parameters.imageBuilderImage }}
-      manifest: ${{ parameters.manifest }}
-      repo: ${{ parameters.repo }}
       repoVolume: build-repo-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml
