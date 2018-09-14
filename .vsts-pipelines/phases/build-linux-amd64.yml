@@ -2,7 +2,6 @@ parameters:
   imageBuilderImage: null
   manifest: null
   repo: null
-  matrix: {}
 phases:
   - phase: Build_Linux_amd64
     condition: or(eq(variables['singlePhase'], ''), eq(variables['singlePhase'], 'build'))
@@ -13,7 +12,7 @@ phases:
         - agent.os -equals linux
       parallel: 100
       timeoutInMinutes: 90
-      matrix: ${{ parameters.matrix }}
+      matrix: $[ dependencies.GenerateMatrices.outputs['buildMatrix.buildMatrixLinuxAmd64'] ]
     variables:
       imageBuilder.image: ${{ parameters.imageBuilderImage }}
       manifest: ${{ parameters.manifest }}

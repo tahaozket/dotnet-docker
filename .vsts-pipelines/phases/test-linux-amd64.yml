@@ -1,7 +1,6 @@
 parameters:
   testRunnerLinuxImage: null
   repo: null
-  matrix: {}
 phases:
   - phase: Test_Linux_amd64
     condition: and(ne(variables['repo'], 'dotnet-samples'), or(and(succeeded(), eq(variables['singlePhase'], '')), eq(variables['singlePhase'], 'test')))
@@ -14,7 +13,7 @@ phases:
         - agent.os -equals linux
       parallel: 100
       timeoutInMinutes: 90
-      matrix: ${{ parameters.matrix }}
+      matrix: $[ dependencies.GenerateMatrices.outputs['testMatrix.testMatrixLinuxAmd64'] ]
     variables:
       repo: ${{ parameters.repo }}
       repoVolume: test-repo-$(Build.BuildId)
