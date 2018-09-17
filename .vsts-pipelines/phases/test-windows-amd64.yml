@@ -15,6 +15,8 @@ phases:
       matrix: ${{ parameters.matrix }}
     steps:
       - template: ../steps/docker-init-windows.yml
+        parameters:
+          setupImageBuilder: false
       - script: docker login -u $(acr.userName) -p $(BotAccount-dotnet-docker-acr-bot-password) $(acr.server)
         displayName: Docker login
       - powershell: ./tests/run-tests.ps1 -VersionFilter $(dotnetVersion)* -OSFilter $(osVersion) -Repo $(acr.server)/$(repo)-$(stagingRepo.suffix)
