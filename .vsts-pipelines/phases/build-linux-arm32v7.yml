@@ -1,5 +1,3 @@
-parameters:
-  imageBuilderImage: null
 phases:
   - phase: Build_Linux_arm32v7
     condition: or(eq(variables['singlePhase'], ''), eq(variables['singlePhase'], 'build'))
@@ -10,16 +8,13 @@ phases:
         - agent.os -equals linux
         - DockerArch -equals arm32v7
       parallel: 100
-      timeoutInMinutes: 90
       matrix: $[ dependencies.GenerateMatrices.outputs['buildMatrix.buildMatrixLinuxArm32v7'] ]
     variables:
       docker.commonRunArgs: --rm -v $(repoVolume):/repo -v /docker-certs:/docker-certs -w /repo -e DOCKER_CERT_PATH=/docker-certs -e DOCKER_TLS_VERIFY=1 -e DOCKER_HOST=tcp://$(PIIP):2376
-      imageBuilder.image: ${{ parameters.imageBuilderImage }}
       repoVolume: build-repo-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml
         parameters:
-          image: $(imageBuilder.image)
           repoVolume: $(repoVolume)
       # The script task does not currently work (curl ssl issues), using CmdLine as workaround.
       - task: CmdLine@1

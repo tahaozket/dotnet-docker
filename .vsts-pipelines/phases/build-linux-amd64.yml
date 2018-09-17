@@ -1,5 +1,3 @@
-parameters:
-  imageBuilderImage: null
 phases:
   - phase: Build_Linux_amd64
     condition: or(eq(variables['singlePhase'], ''), eq(variables['singlePhase'], 'build'))
@@ -8,15 +6,12 @@ phases:
       name: DotNet-Build
       demands: agent.os -equals linux
       parallel: 100
-      timeoutInMinutes: 90
       matrix: $[ dependencies.GenerateMatrices.outputs['buildMatrix.buildMatrixLinuxAmd64'] ]
     variables:
-      imageBuilder.image: ${{ parameters.imageBuilderImage }}
       repoVolume: build-repo-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml
         parameters:
-          image: $(imageBuilder.image)
           repoVolume: $(repoVolume)
       # The script task does not currently work (curl ssl issues), using CmdLine as workaround.
       - task: CmdLine@1
