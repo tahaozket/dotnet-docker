@@ -19,11 +19,8 @@ phases:
       matrix: ${{ parameters.matrix }}
     variables:
       architecture: ${{ parameters.architecture }}
-      repoVolume: copy-repo-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml
-        parameters:
-          repoVolume: $(repoVolume)
       - script: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image) copyImages --manifest $(manifest) --architecture $(architecture) $(imageBuilderPaths) --source-server $(acr.server) --source-username $(acr.userName) --source-password $(BotAccount-dotnet-docker-acr-bot-password) --destination-username $(dockerRegistry.userName) --destination-password $(BotAccount-dotnet-dockerhub-bot-password) $(imageBuilder.queueArgs) $(imageBuilder.publishQueueArgs) $(acr.server)/$(repo)-$(stagingRepo.suffix)
         displayName: Copy Images
       - template: ../steps/docker-cleanup-linux.yml

@@ -7,12 +7,8 @@ phases:
       demands: agent.os -equals linux
       parallel: 100
       matrix: $[ dependencies.GenerateMatrices.outputs['buildMatrix.buildMatrixLinuxAmd64'] ]
-    variables:
-      repoVolume: build-repo-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml
-        parameters:
-          repoVolume: $(repoVolume)
       # The script task does not currently work (curl ssl issues), using CmdLine as workaround.
       - task: CmdLine@1
         displayName: Build Images

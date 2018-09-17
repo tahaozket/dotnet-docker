@@ -10,12 +10,10 @@ phases:
       parallel: 100
       matrix: $[ dependencies.GenerateMatrices.outputs['testMatrix.testMatrixLinuxAmd64'] ]
     variables:
-      repoVolume: test-repo-$(Build.BuildId)
       testRunner.container: testrunner-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml
         parameters:
-          repoVolume: $(repoVolume)
           setupImageBuilder: false
           setupTestRunner: true
       - script: docker run -t -d  -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo -e RUNNING_TESTS_IN_CONTAINER=true --name $(testRunner.container) $(testrunner.image)

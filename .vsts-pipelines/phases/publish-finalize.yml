@@ -13,11 +13,8 @@ phases:
     variables:
       docker.commonRunArgs: --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image)
       imageBuilder.commonCmdArgs: --manifest $(manifest) --username $(dockerRegistry.userName) --password $(BotAccount-dotnet-dockerhub-bot-password) $(imageBuilder.queueArgs) $(imageBuilder.publishQueueArgs)
-      repoVolume: publish-repo-$(Build.BuildId)
     steps:
       - template: ../steps/docker-init-linux.yml
-        parameters:
-          repoVolume: $(repoVolume)
       - script: docker run $(docker.commonRunArgs) publishManifest $(imageBuilder.commonCmdArgs)
         displayName: Publish Manifest
       - script: docker run $(docker.commonRunArgs) updateReadme $(imageBuilder.commonCmdArgs)
