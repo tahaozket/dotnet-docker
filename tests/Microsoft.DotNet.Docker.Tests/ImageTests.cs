@@ -248,7 +248,8 @@ namespace Microsoft.DotNet.Docker.Tests
             string frameworkDepAppId = GetIdentifier(imageData.DotNetVersion, "framework-dependent-app");
             bool isRunAsContainerAdministrator = 
                 String.Equals("nanoserver-1709", imageData.OsVariant, StringComparison.OrdinalIgnoreCase)
-                || String.Equals("nanoserver-1803", imageData.OsVariant, StringComparison.OrdinalIgnoreCase);
+                || String.Equals("nanoserver-1803", imageData.OsVariant, StringComparison.OrdinalIgnoreCase)
+                || String.Equals("nanoserver-1809", imageData.OsVariant, StringComparison.OrdinalIgnoreCase);
             string publishCmd = GetPublishArgs(imageData);
 
             try
