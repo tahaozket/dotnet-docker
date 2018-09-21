@@ -29,7 +29,7 @@ steps:
     - script: $(Build.Repository.LocalPath)/scripts/pull-image.sh $(imageBuilder.image)
       displayName: Pull Image Builder
     - script: echo "##vso[task.setvariable variable=runImageBuilderCmd]docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image)"
-    displayName: Define runImageBuilderCmd Variable
+      displayName: Define runImageBuilderCmd Variable
 
   ################################################################################
   # Setup Test Runner (Optional)
