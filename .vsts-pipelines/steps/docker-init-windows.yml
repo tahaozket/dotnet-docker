@@ -11,7 +11,7 @@ steps:
   # Setup Image Builder (Optional)
   ################################################################################
   - ${{ if parameters.setupImageBuilder }}:
-    - script: echo "##vso[task.setvariable variable=imageBuilder.image]microsoft/dotnet-buildtools-prereqs:image-builder-nanoserver-20180904151412"
+    - script: echo "##vso[task.setvariable variable=imageBuilder.image]microsoft/dotnet-buildtools-prereqs:image-builder-nanoserver-20180904151412
       displayName: Define imageBuilder.image Variable
     - powershell: $(Build.Repository.LocalPath)/scripts/Invoke-PullImage.ps1 '$(imageBuilder.image)'
       displayName: Pull Image Builder
@@ -26,3 +26,5 @@ steps:
       displayName: Cleanup Setup Container
       condition: always()
       continueOnError: true
+    - script: echo "##vso[task.setvariable variable=runImageBuilderCmd]$(Build.BinariesDirectory)\Microsoft.DotNet.ImageBuilder\Microsoft.DotNet.ImageBuilder.exe
+      displayName: Define runImageBuilderCmd Variable

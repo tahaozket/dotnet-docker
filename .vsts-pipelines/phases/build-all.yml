@@ -8,9 +8,9 @@ phases:
       demands: agent.os -equals linux
     steps:
       - template: ../steps/docker-init-linux.yml
-      - script: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image) generateBuildMatrix --manifest $(manifest) --type build
+      - script: $(runImageBuilderCmd) generateBuildMatrix --manifest $(manifest) --type build
         name: buildMatrix
-      - script: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image) generateBuildMatrix --manifest $(manifest) --type test
+      - script: $(runImageBuilderCmd) generateBuildMatrix --manifest $(manifest) --type test
         name: testMatrix
       - template: ../steps/docker-cleanup-linux.yml
 

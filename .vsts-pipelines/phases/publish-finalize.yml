@@ -11,12 +11,11 @@ phases:
       name: DotNet-Build
       demands: agent.os -equals linux
     variables:
-      docker.commonRunArgs: --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(repoVolume):/repo -w /repo $(imageBuilder.image)
       imageBuilder.commonCmdArgs: --manifest $(manifest) --username $(dockerRegistry.userName) --password $(BotAccount-dotnet-dockerhub-bot-password) $(imageBuilder.queueArgs) $(imageBuilder.publishQueueArgs)
     steps:
       - template: ../steps/docker-init-linux.yml
-      - script: docker run $(docker.commonRunArgs) publishManifest $(imageBuilder.commonCmdArgs)
+      - script: $(runImageBuilderCmd) publishManifest $(imageBuilder.commonCmdArgs)
         displayName: Publish Manifest
-      - script: docker run $(docker.commonRunArgs) updateReadme $(imageBuilder.commonCmdArgs)
+      - script: $(runImageBuilderCmd) updateReadme $(imageBuilder.commonCmdArgs)
         displayName: Update Readme
       - template: ../steps/docker-cleanup-linux.yml
